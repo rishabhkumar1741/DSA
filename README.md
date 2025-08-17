@@ -3,6 +3,10 @@
 - 📝 [List Interface](#list-interface)
   - 📦 [Internal Working of ArrayList](#internal-working-of-arraylist)
 - ⚖️ [Comparator](#comparator)
+- 🧵 [Vector](#vector)
+- 🧱 [Stack](#stack)
+- 🌳 [Tree](#tree)
+
 
 
 ## Collection Framework
@@ -146,11 +150,156 @@ public class Main {
     - Multi-level sorting (e.g., sort by name, then by marks).
     - Situations where natural ordering (Comparable) isn’t suitable.
 
-If you want, I can now retrofit emoji icons for the previous topics too:
-- 📚 Collection Framework
-- 📝 List Interface
-- 📦 Internal Working of ArrayList
-- ⚖️ Comparator
-  This way your README’s Table of Contents becomes both clickable and visually scannable.
-  Shall I go ahead and give you that updated, emoji‑powered master TOC?
+## Vector
+Definition:
 
+Vector is a legacy class in Java that implements a growable array of objects, similar to ArrayList, but with built-in synchronization for thread safety.
+
+### Key Points
+- Part of  package.
+- Implements , , , and .
+- Thread-safe → all methods are synchronized.
+- Slower than  in single-threaded environments due to locking overhead.
+- Automatically resizes when capacity is exceeded (like ).
+- Default growth: doubles capacity when full (vs.  which grows by 50%).
+
+```java
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Vector<String> vector = new Vector<>();
+        vector.add("Apple");
+        vector.add("Banana");
+        vector.add("Cherry");
+
+        System.out.println(vector); // [Apple, Banana, Cherry]
+    }
+}
+```
+Use Cases
+- When you need a thread-safe dynamic array and don’t want to manually synchronize an ArrayList.
+- Legacy systems or APIs that still use Vector.
+- Rarely used in modern code — prefer ArrayList + Collections.synchronizedList() or CopyOnWriteArrayList.
+
+### ⏱️ Time Complexities
+
+| Operation         | Time Complexity |
+|------------------|-----------------|
+| Access by index  | O(1)            |
+| Insert at end    | Amortized O(1)  |
+| Insert at middle | O(n)            |
+| Delete by index  | O(n)            |
+| Search           | O(n)            |
+
+## Stack
+- Definition:
+  A Stack is a linear data structure that follows the LIFO (Last In, First Out) principle  the last element added is the first one to be removed.
+
+Key Points
+  - Java provides a Stack class in java.util (extends Vector).
+- Common operations:
+  - push() → add element to top
+  - pop() → remove and return top element
+  - peek() → view top element without removing
+  - isEmpty() → check if stack is empty
+  - search() → find position of element from top (1-based index)
+- Can also implement stack using Deque (ArrayDeque) for better performance.
+
+Example (Java)
+```java
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Stack<String> stack = new Stack<>();
+        stack.push("A");
+        stack.push("B");
+        stack.push("C");
+
+        System.out.println(stack.peek()); // C
+        System.out.println(stack.pop());  // C
+        System.out.println(stack);        // [A, B]
+    }
+}
+```
+
+
+
+⏱️ Time Complexities
+
+| Operation   | Time Complexity |
+|-------------|-----------------|
+| push        | O(1)            |
+| pop         | O(1)            |
+| peek        | O(1)            |
+| search      | O(n)            |
+| isEmpty     | O(1)            |
+
+
+
+Use Cases
+- Undo functionality in editors.
+- Expression evaluation (infix → postfix).
+- Backtracking algorithms (DFS, recursion).
+- Browser history navigation.
+
+
+## Tree
+
+- Definition:
+  A Tree is a hierarchical data structure consisting of nodes, where each node has a value and references to child nodes. It starts from a root node and branches out into subtrees.
+
+Key Points
+- Terminology:
+  - Root: Topmost node.
+  - Leaf: Node with no children.
+  - Parent/Child: Relationship between connected nodes.
+  - Subtree: Tree formed by a node and its descendants.
+  - Height: Longest path from root to leaf.
+  - Depth: Distance from root to a node.
+- Types of Trees:
+  - Binary Tree: Each node has ≤ 2 children.
+  - Binary Search Tree (BST): Left child < root < right child.
+  - Balanced Tree (e.g., AVL, Red-Black): Maintains height balance.
+  - Heap: Complete binary tree with heap property.
+  - Trie: Tree for prefix-based string storage.
+  - N-ary Tree: Node can have N children.
+- Traversal Techniques:
+  - Inorder (LNR): Left → Node → Right
+  - Preorder (NLR): Node → Left → Right
+  - Postorder (LRN): Left → Right → Node
+  - Level Order: Breadth-first using queue
+
+Example (Binary Tree Node in Java)
+
+```java
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) {
+        this.val = val;
+    }
+}
+```
+
+
+⏱️ Time Complexities (Binary Search Tree)
+
+| Operation   | Average Case | Worst Case |
+|-------------|--------------|------------|
+| Search      | O(log n)     | O(n)       |
+| Insert      | O(log n)     | O(n)       |
+| Delete      | O(log n)     | O(n)       |
+| Traversal   | O(n)         | O(n)       |
+
+
+Worst case occurs when the tree becomes skewed (like a linked list).
+
+
+Use Cases
+- Hierarchical data (e.g., file systems, org charts).
+- Efficient searching and sorting (BST, AVL).
+- Expression parsing (syntax trees).
+- Auto-complete and dictionary (Trie).
+- Priority queues (Heap).

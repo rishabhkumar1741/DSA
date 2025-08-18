@@ -6,6 +6,30 @@
 - 🧵 [Vector](#vector)
 - 🧱 [Stack](#stack)
 - 🌳 [Tree](#tree)
+- 🌲 [Binary Tree](#binary-tree)
+- 🌿 [Binary Search Tree (BST)](#binary-search-tree-bst)
+- 🌾 [AVL Tree](#avl-tree)
+- 🌐 [Trie](#trie)
+- 🔺 [Heap](#heap)
+- [☕ Java 8](#-java-8)
+  - 🌿 [Lambda Expressions](#-lambda-expressions)
+  - 🔧 [Functional Interfaces](#-functional-interfaces)
+    - ✅ [Predicate](#-predicate)
+    - 🧪 [BiPredicate](#-bipredicate)
+    - 🔁 [Function](#-function)
+    - 🔄 [BiFunction](#-bifunction)
+    - 📦 [Consumer](#-consumer)
+    - 📤 [BiConsumer](#-biconsumer)
+    - 🛒 [Supplier](#-supplier)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -303,3 +327,428 @@ Use Cases
 - Expression parsing (syntax trees).
 - Auto-complete and dictionary (Trie).
 - Priority queues (Heap).
+
+## Binary Tree
+
+- Definition:
+  A Binary Tree is a tree data structure where each node has at most two children, referred to as left and right.
+
+#### Key Properties
+- Max children per node: 2
+- Recursive structure: Each subtree is itself a binary tree
+- Not necessarily ordered (unlike BST)
+
+#### Types of Binary Trees
+- Full Binary Tree: Every node has 0 or 2 children
+- Perfect Binary Tree: All internal nodes have 2 children, and all leaves are at the same level
+- Complete Binary Tree: All levels filled except possibly the last, filled left to right
+- Skewed Tree: All nodes lean left or right (degenerates into a linked list)
+
+Java Implementation
+
+```java
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) {
+        this.val = val;
+    }
+}
+```
+#### 🔁 Traversals
+
+| Type        | Order               | Use Case                     |
+|-------------|---------------------|------------------------------|
+| Inorder     | Left → Node → Right | BST: Sorted order            |
+| Preorder    | Node → Left → Right | Tree copy, prefix expression |
+| Postorder   | Left → Right → Node | Tree deletion, postfix expr  |
+| Level Order | BFS using queue     | Shortest path, layer view    |
+
+#### Recursive Traversal Example (Inorder,preOrder,postOrder)
+
+#### preOrder
+```java
+    void preOrder(Node root){
+        if(root == null) return;
+        System.out.print(root.data +" => ");
+        preOrder(root.left);
+        preOrder(root.right);
+    }
+```
+#### inorder
+```java
+void inorder(TreeNode root) {
+    if (root == null) return;
+    inorder(root.left);
+    System.out.print(root.val + " ");
+    inorder(root.right);
+}
+```
+#### postOrder
+```java
+    void postOrder(Node root)
+    {
+        if(root == null) return;
+        postOrder(root.left);
+        postOrder(root.right);
+        System.out.print(root.data +" => ");
+    }
+```
+#### levelOder
+```java
+    void levelOder(Node root)
+    {
+        if(root==null)
+        {
+            return ;
+        }
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        q.add(null);
+
+        while(!q.isEmpty())
+        {
+            Node currNode = q.remove();
+            if(currNode == null)
+            {
+                System.out.println();
+                if(q.isEmpty())
+                {
+                    break;
+                }else {
+                    q.add(null);
+                }
+            }else{
+                System.out.print(currNode.data+" ");
+                if(currNode.left !=null)
+                {
+                    q.add(currNode.left);
+                }
+                if(currNode.right !=null)
+                {
+                    q.add(currNode.right);
+                }
+            }
+        }
+    }
+```
+
+#### example for sum of tree 
+```java
+int sumOfNode(Node root)
+    {
+        if(root == null) return 0;
+        int leftSum = sumOfNode(root.left);
+        int rightSum = sumOfNode(root.right);
+        return leftSum + rightSum + root.data;
+    }
+```
+
+#### ⏱️ Time & Space Complexity
+
+| Operation            | Time Complexity      | Space Complexity |
+|----------------------|----------------------|------------------|
+| Traversal            | O(n)                 | O(h) (recursive) |
+| Insert/Search/Delete | Depends on tree type |
+
+h = height of tree. In worst case (skewed), h = n.
+
+Use Cases
+- Representing hierarchical structures
+- Expression trees (Pre/Post/Inorder)
+- Tree-based recursion problems
+- Foundation for BST, AVL, Heap, etc.
+
+## 🌿Binary Search Tree (BST)
+- Definition:
+  - A BST is a binary tree where each node follows the rule:
+    left subtree < node < right subtree
+
+✅ Properties
+- Efficient search, insert, delete (avg O(log n))
+- Inorder traversal gives sorted order
+- Duplicates usually not allowed
+
+#### 🔧 Java Implementation
+```java
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) {
+        this.val = val;
+    }
+}
+```
+#### 🔍 Search Operation
+````java
+boolean search(TreeNode root, int key) {
+    if (root == null) return false;
+    if (key == root.val) return true;
+    return key < root.val ? search(root.left, key) : search(root.right, key);
+}
+````
+#### ⏱️ Time Complexity
+| Operation | Avg Case | Worst Case |
+|-----------|----------|------------|
+| Search    | O(log n) | O(n)       |
+| Insert    | O(log n) | O(n)       |
+| Delete    | O(log n) | O(n)       |
+
+Worst case: skewed tree (like linked list)
+
+
+## 🌾AVL Tree
+- Definition:
+  A self-balancing BST where the difference in height between left and right subtree (balance factor) is at most ±1.
+
+🔁 Rotations
+- Left Rotation
+- Right Rotation
+- Left-Right Rotation
+- Right-Left Rotation
+
+⚖️ Balance Factor
+balanceFactor = height(left subtree) - height(right subtree)
+
+
+
+⏱️ Time Complexity
+| Operation | Time     |
+|-----------|----------|
+| Search    | O(log n) |
+| Insert    | O(log n) |
+| Delete    | O(log n) |
+
+
+Always balanced → guarantees log(n) height
+
+
+🌐 Trie
+- Definition:
+  A prefix tree used to store strings efficiently, especially for search and autocomplete.
+
+📚 Properties
+- Each node represents a character
+- Paths from root to leaf form words
+- Fast prefix lookup
+
+🔧 Java Implementation
+class TrieNode {
+TrieNode[] children = new TrieNode[26];
+boolean isEndOfWord = false;
+}
+
+
+
+🔍 Insert Operation
+void insert(TrieNode root, String word) {
+for (char c : word.toCharArray()) {
+int idx = c - 'a';
+if (root.children[idx] == null)
+root.children[idx] = new TrieNode();
+root = root.children[idx];
+}
+root.isEndOfWord = true;
+}
+
+
+
+⏱️ Time Complexity
+| Operation | Time     |
+|-----------|----------|
+| Insert    | O(L)     |
+| Search    | O(L)     |
+| Prefix    | O(L)     |
+
+
+L = length of word
+
+
+🔺 Heap
+- Definition:
+  A complete binary tree that satisfies the heap property:
+- Max Heap: Parent ≥ children
+- Min Heap: Parent ≤ children
+
+🔧 Java (Min Heap using PriorityQueue)
+PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+
+
+
+🧮 Heapify Operation
+void heapify(int[] arr, int n, int i) {
+int smallest = i;
+int left = 2*i + 1;
+int right = 2*i + 2;
+
+    if (left < n && arr[left] < arr[smallest]) smallest = left;
+    if (right < n && arr[right] < arr[smallest]) smallest = right;
+
+    if (smallest != i) {
+        swap(arr, i, smallest);
+        heapify(arr, n, smallest);
+    }
+}
+
+
+
+⏱️ Time Complexity
+| Operation | Time     |
+|-----------|----------|
+| Insert    | O(log n) |
+| Delete    | O(log n) |
+| Heapify   | O(log n) |
+| BuildHeap | O(n)     |
+
+
+
+🎯 Use Cases
+- Priority queues
+- Scheduling tasks
+- Dijkstra’s algorithm
+- Heap sort
+
+
+
+# ☕ Java 8
+
+## 🌿 Lambda Expressions
+- Purpose: Enables functional-style programming with concise syntax.
+- Syntax: (parameters) -> expression
+- Example:
+```
+(a, b) -> a + b
+```
+- Use Case: Simplifies iteration, filtering, and event handling
+
+
+## 🔧 Functional Interfaces
+- Definition: Interfaces with a single abstract method (SAM).
+- Examples: Runnable, Comparator, Predicate
+- Annotation: @FunctionalInterface
+- Use Case: Enables lambda expressions and method references.
+
+## ✅ Predicate
+#### Definition:
+A Predicate<T> is a functional interface that takes one input and returns a boolean. Used for conditional checks.
+
+#### Method
+```java
+boolean test(T t);
+```
+#### Example:
+
+```
+Predicate<Integer> isEven = x -> x % 2 == 0;
+System.out.println(isEven.test(4)); // true
+```
+- Use Cases:
+  - Filtering collections
+  - Stream operations: .filter(predicate)
+  - Conditional logic chaining: .and(), .or(), .negate()
+
+## 🧪 BiPredicate
+#### Definition:
+ - A BiPredicate<T, U> takes two inputs and returns a boolean. Used for dual-parameter condition checks.
+#### Method:
+```java
+boolean test(T t, U u);
+```
+#### Example:
+````java
+BiPredicate<String, Integer> isLongEnough = (str, len) -> str.length() >= len;
+System.out.println(isLongEnough.test("Java", 4)); // true
+````
+#### Use Cases:
+- Comparing two values
+- Validating key-value pairs
+- Stream filtering with two inputs
+
+
+## 🔁 Function
+#### Definition:
+A Function<T, R> takes an input of type T and returns a result of type R. Used for data transformation.
+
+#### Method:
+```java
+R apply(T t);
+```
+#### - Example:
+```
+Function<Integer, Integer> square = x -> x * x;
+System.out.println(square.apply(5)); // 25
+```
+- Use Cases:
+  - Mapping values in streams: .map(function)
+  - DTO transformations
+  - Chaining with .compose() and .andThen()
+
+## 🔄 BiFunction
+
+#### Definition:
+  A BiFunction<T, U, R> takes two inputs and returns a result. Used for dual-input transformations.
+- Method:
+```java
+R apply(T t, U u);
+```
+#### Example
+```java
+BiFunction<Integer, Integer, Integer> add = (a, b) -> a + b;
+System.out.println(add.apply(5, 3)); // 8
+```
+#### Use Cases:
+- Combining two values
+- Calculations or formatting
+- DTO merging
+
+
+## 📦 Consumer
+#### Definition:
+  A Consumer<T> takes one input and returns nothing. Used for performing actions.
+#### Method:
+```void accept(T t);```
+####  Example:
+```
+Consumer<String> greet = name -> System.out.println("Hello, " + name);
+greet.accept("Rishabh"); // Hello, Rishabh
+```
+- Use Cases:
+  - Printing/logging
+  - Applying actions in .forEach()
+  - UI updates or side effects
+
+## 📤 BiConsumer
+
+#### Definition:
+  A BiConsumer<T, U> takes two inputs and returns nothing. Used for dual-input actions.
+#### Method:
+void accept(T t, U u);
+#### - Example:
+```java
+BiConsumer<String, Integer> printAge = (name, age) -> 
+    System.out.println(name + " is " + age + " years old");
+printAge.accept("Rishabh", 25);
+```
+####  Use Cases:
+- Logging key-value pairs
+- Updating maps
+- UI rendering with multiple inputs
+
+
+## 🛒 Supplier
+
+#### Definition:
+  A Supplier<T> takes no input and returns a result. Used for lazy generation or factory-style logic.
+#### Method:
+```
+T get();
+
+Example
+
+Supplier<Double> randomValue = () -> Math.random();
+System.out.println(randomValue.get());
+```
+#### Use Cases:
+- Lazy initialization
+- Random or dynamic data generation
+- Caching or configuration loadin
